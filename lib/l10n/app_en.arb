@@ -1,0 +1,35 @@
+{
+  "splashViewTitle": "Al-Mushaf Al-Sharif",
+  "splashViewSubTitle": "Recite the Quran with tartil",
+  "splashViewDesc": "Surah Al-Muzzammil - Verse 4",
+  "firstOnBoardingTitle": "The Holy Quran",
+  "firstOnBoardingSubTitle": "Read the Quran clearly with beautiful design and listen to recitations",
+  "secondOnBoardingTitle": "Prayer Times",
+  "secondOnBoardingSubTitle": "Accurate notifications for prayer times according to your location with Adhan sound",
+  "thirdOnBoardingTitle": "Your Spiritual Companion",
+  "thirdOnBoardingSubTitle": "Daily reminders, Azkar, Tasbeeh, everything you need in your spiritual journey",
+  "skipText": "Skip",
+  "onBoardingButtonbuttonText": "Continue",
+  "languageSelectionTitle": "Choose Language",
+  "firstLanguage": "Arabic",
+  "secondLanguage": "English",
+  "thirdLanguage": "Urdu",
+  "fourthLanguage": "French",
+  "identifyLocationTitle": "Location",
+  "identifyLocationSubTitle": "We need your location to calculate accurate prayer times",
+   "firstLocationListTile": "Find Qibla Direction",
+  "firstLocationListTileSubTitle": "We use your location to accurately determine the direction of the Kaaba wherever you are",
+
+  "secondLocationListTile": "Detect Your Location",
+  "secondLocationListTileSubTitle": "Your location is required to improve your in-app experience",
+
+  "thirdLocationListTile": "Your Privacy Matters",
+  "thirdLocationListTileSubTitle": "Your location data is never stored or shared with anyone",
+  "selectionLocationButtonText": "Allow location access",
+  "selectionLocationSetting": "You can change this later in settings",
+ 
+  "locationServicesDisabled": "Location services are disabled.",
+  "locationPermissionsDenied": "Location permission denied.",
+  "locationPermissionsDeniedForever": "Location permission denied permanently.",
+  "failedToGetCurrentLocation": "Failed to get current location."
+}

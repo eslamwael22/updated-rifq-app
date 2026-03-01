@@ -1,0 +1,38 @@
+ 
+
+ {
+    "splashViewTitle":"المصحف الشريف",
+    "splashViewSubTitle":"﴿ وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا ﴾",
+    "splashViewDesc":"سورة المزمل - آية 4",
+    "firstOnBoardingTitle":"القرآن الكريم",
+     "firstOnBoardingSubTitle":"اقرأ القرآن الكريم بخط واضح وتصميم جميل مع إمكانية الاستماع للتلاوات",
+     "secondOnBoardingTitle":"مواقيت الصلاة",
+     "secondOnBoardingSubTitle":"تنبيهات دقيقة لمواقيت الصلاة حسب موقعك مع صوت الأذان",
+     "thirdOnBoardingTitle":"رفيقك الروحاني",
+     "thirdOnBoardingSubTitle":"تذكيرات يومية، أذكار، تسبيح، وكل ما تحتاجه في رحلتك الإيمانية",
+     "skipText":"تخطي",
+     "onBoardingButtonbuttonText":"متابعة",
+      "languageSelectionTitle":"اختر اللغة",
+      "firstLanguage":"العربية",
+      "secondLanguage":"الانجليزية",
+      "thirdLanguage":"اردو",
+      "fourthLanguage":"فرنسية",
+      "identifyLocationTitle":"تحديد الموقع",
+      "identifyLocationSubTitle":"نحتاج إلى موقعك لحساب أوقات الصلاة الدقيقة في منطقتك وإظهار المساجد القريبة منك",
+       "firstLocationListTile": "تحديد اتجاه القبلة",
+  "firstLocationListTileSubTitle": "نستخدم موقعك لتحديد اتجاه الكعبة بدقة أينما كنت",
+
+  "secondLocationListTile": "تحديد موقعك",
+  "secondLocationListTileSubTitle": "نحتاج إلى موقعك لتحسين تجربة الاستخدام داخل التطبيق",
+
+  "thirdLocationListTile": "خصوصيتك أولاً",
+  "thirdLocationListTileSubTitle": "لا يتم تخزين أو مشاركة بيانات موقعك مع أي جهة",
+      "selectionLocationSetting":"يمكنك تغيير هذا الإعداد لاحقًا من الإعدادات",
+      
+      "selectionLocationButtonText": "السماح بصلاحيات الموقع",
+      "locationServicesDisabled": "خدمات الموقع معطلة.",
+      "locationPermissionsDenied": "صلاحيات الموقع مرفوضة.",
+      "locationPermissionsDeniedForever": "صلاحيات الموقع مرفوضة بشكل دائم، لا يمكن طلبها.",
+      "failedToGetCurrentLocation": "فشل الحصول على الموقع الحالي."
+
+}

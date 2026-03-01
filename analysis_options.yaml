@@ -1,0 +1,52 @@
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"        
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+
+formatter:
+ trailing_commas:  preserve
+linter:
+  rules:
+    # ✅ Consts
+    - prefer_const_constructors : true
+    - prefer_const_constructors_in_immutables
+    - prefer_const_literals_to_create_immutables
+
+    # ✅ Formatting & Style
+    - prefer_trailing_commas      
+    - prefer_const_declarations
+    - always_put_control_body_on_new_line
+    - always_put_required_named_parameters_first
+    - avoid_function_literals_in_foreach_calls
+    - require_trailing_commas
+
+    # ✅ Safety
+    - avoid_print                  
+    - avoid_empty_else
+    - avoid_type_to_string
+    - avoid_returning_null
+    - null_closures
+
+    # ✅ Readability
+    - prefer_single_quotes
+    - unnecessary_this
+    - use_super_parameters
+    - use_named_constants
+    - avoid_redundant_argument_values
+    - prefer_final_fields
+    - prefer_final_locals
+
+    # ✅ Performance
+    - avoid_unnecessary_containers
+    - unnecessary_const
+    - unnecessary_new
+    - use_is_even_rather_than_modulo
+
+    # ✅ Naming
+    - prefer_typing_uninitialized_variables
+    
+  
