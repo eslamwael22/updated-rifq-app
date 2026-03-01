@@ -10,6 +10,7 @@ class QuranPageContent extends StatelessWidget {
   final String currentSurahName;
   final double fontSize;
   final int? highlightedAyah;
+  final VoidCallback? onTap;
 
   const QuranPageContent({
     required this.pageData,
@@ -18,6 +19,7 @@ class QuranPageContent extends StatelessWidget {
     required this.currentSurahName,
     required this.fontSize,
     this.highlightedAyah,
+    this.onTap,
     super.key,
   });
 
@@ -26,14 +28,12 @@ class QuranPageContent extends StatelessWidget {
 
     final previousPage = allPages[pageIndex - 1];
 
-    // Check if this surah was already shown in previous page
     for (var surah in previousPage.surahs) {
       if (surah.surahName == surahName) {
         return false;
       }
     }
-    
-    // Always show title for first surah in page or if it's a new surah
+
     return true;
   }
 
@@ -41,42 +41,46 @@ class QuranPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 12,
-                right: 12,
-                top: 2,
-                bottom: 70,
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: onTap,
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: pageData.surahs.asMap().entries.map((entry) {
-                  final surahInPage = entry.value;
-                  final String surahName = surahInPage.surahName;
-                  final List<Ayah> verses = surahInPage.ayahs;
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 12,
+                  right: 12,
+                  top: 50,
+                  bottom: 70,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: pageData.surahs.asMap().entries.map((entry) {
+                    final surahInPage = entry.value;
+                    final String surahName = surahInPage.surahName;
+                    final List<Ayah> verses = surahInPage.ayahs;
+                    final bool showTitle = shouldShowSurahTitle(surahName);
 
-                  final bool showTitle = shouldShowSurahTitle(surahName);
-
-                  return Column(
-                    children: [
-                      SurahTitle(
-                        surahName: surahName,
-                        showTitle: showTitle,
-                      ),
-                      SizedBox(height: 2),
-                      QuranText(
-                        verses: verses,
-                        fontSize: fontSize,
-                        highlightedAyah: highlightedAyah,
-                      ),
-                    ],
-                  );
-                }).toList(),
+                    return Column(
+                      children: [
+                        SurahTitle(
+                          surahName: surahName,
+                          showTitle: showTitle,
+                        ),
+                        SizedBox(height: 2),
+                        QuranText(
+                          verses: verses,
+                          fontSize: fontSize,
+                          highlightedAyah: highlightedAyah,
+                          onTap: onTap,
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),

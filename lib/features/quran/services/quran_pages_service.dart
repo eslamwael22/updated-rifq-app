@@ -62,6 +62,11 @@ class QuranPagesService {
   // Map to fix character differences between surah_data.dart and JSON
   static final Map<String, String> _surahNameMapping = {
     'سبأ': 'سبإ',
+    'النبأ': 'النبإ',
+    'الإنسان': 'الانسان',
+    'إبراهيم': 'ابراهيم',
+    'الإسراء': 'الاسراء',
+    'الإخلاص': 'الاخلاص',
     // Add more mappings if needed
   };
 

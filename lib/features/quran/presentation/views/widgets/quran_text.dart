@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina_app/features/quran/services/quran_pages_service.dart';
 
@@ -6,12 +7,14 @@ class QuranText extends StatelessWidget {
   final List<Ayah> verses;
   final double fontSize;
   final int? highlightedAyah;
+  final VoidCallback? onTap;
 
   const QuranText({
     required this.verses,
     super.key,
     this.fontSize = 31.0,
     this.highlightedAyah,
+    this.onTap,
   });
 
   String toArabicNumber(int number) {
@@ -25,30 +28,26 @@ class QuranText extends StatelessWidget {
     return numStr;
   }
 
-  String _getFullText() {
-    String fullText = '';
-    for (int i = 0; i < verses.length; i++) {
-      final verse = verses[i];
-      if (verse.index == 0) {
-        // Basmala - center it
-        fullText += '    ${verse.text}    \n\n';
-      } else {
-        fullText += '${verse.text} ${toArabicNumber(verse.index)} ';
-      }
-    }
-    return fullText.trim();
-  }
-
   String normalizeVerse(String text) {
     return text.replaceAll('\u06DF', '\u0652');
   }
 
+  String _getFullText() {
+    return verses
+        .where((v) => v.index != 0)
+        .map((v) => '${v.text} ${toArabicNumber(v.index)}')
+        .join(' ');
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Basmala if present
-        if (verses.isNotEmpty && verses.first.index == 0)
+        /// Basmala
+        if (verses.isNotEmpty && verses.first.index == 0) ...[
           Center(
             child: Text(
               verses.first.text,
@@ -56,76 +55,70 @@ class QuranText extends StatelessWidget {
                 fontSize: fontSize + 4,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'uthmanic',
-                color: Theme.of(context).colorScheme.primary,
+                color: theme.colorScheme.primary,
                 height: 1.5,
               ),
             ),
           ),
+          SizedBox(height: 12.h),
+        ],
 
-        // Regular verses with selectable text
-        if (verses.isNotEmpty && verses.first.index == 0)
-          SizedBox(height: 10.h),
-
+        /// Verses
         GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+          behavior: HitTestBehavior.translucent,
+          onTap: onTap,
+          onLongPress: () async {
+            await Clipboard.setData(
+              ClipboardData(text: _getFullText()),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('تم نسخ الآيات'),
+                duration: Duration(seconds: 2),
+              ),
+            );
           },
-          child: SelectableText.rich(
+          child: Text.rich(
             TextSpan(
               style: TextStyle(
                 fontSize: fontSize,
                 fontFamily: 'uthmanic',
                 height: 2,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: theme.colorScheme.onSurface,
               ),
               children: verses
                   .where((verse) => verse.index != 0)
                   .map<InlineSpan>((verse) {
-                    final isHighlighted = verse.index == highlightedAyah;
-                    return TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${normalizeVerse(verse.text)} ',
-                          style: isHighlighted
-                              ? TextStyle(
-                                  fontSize: fontSize,
-                                  fontFamily: 'uthmanic',
-                                  height: 2,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  backgroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withOpacity(0.3),
-                                )
-                              : TextStyle(
-                                  fontSize: fontSize,
-                                  fontFamily: 'uthmanic',
-                                  height: 2,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                        ),
-                        TextSpan(
-                          text: '${toArabicNumber(verse.index)} ',
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            color: isHighlighted
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                            backgroundColor: isHighlighted
-                                ? Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withOpacity(0.3)
-                                : null,
-                          ),
-                        ),
-                      ],
-                    );
-                  })
-                  .toList(),
+                final isHighlighted = verse.index == highlightedAyah;
+
+                final highlightColor =
+                    theme.colorScheme.primary.withOpacity(0.25);
+
+                return TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${normalizeVerse(verse.text)} ',
+                      style: isHighlighted
+                          ? TextStyle(
+                              backgroundColor: highlightColor,
+                            )
+                          : null,
+                    ),
+                    TextSpan(
+                      text: '${toArabicNumber(verse.index)} ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: isHighlighted
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.primary,
+                        backgroundColor:
+                            isHighlighted ? highlightColor : null,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
             textAlign: TextAlign.justify,
           ),

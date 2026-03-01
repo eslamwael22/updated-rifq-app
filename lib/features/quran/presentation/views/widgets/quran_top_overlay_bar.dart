@@ -23,13 +23,16 @@ class QuranTopOverlayBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 300),
-      top: showOverlay ? 0 : -180.h,
+      curve: Curves.easeInOut,
+      top: showOverlay ? 0 : -(170.h + topPadding + 10),
       left: 0,
       right: 0,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
@@ -41,9 +44,11 @@ class QuranTopOverlayBar extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: 25.h),
+          padding: EdgeInsets.only(top: topPadding + 10.h),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              /// Top Row (Back + Surah Name + Page Number)
               Row(
                 children: [
                   IconButton(
@@ -65,16 +70,17 @@ class QuranTopOverlayBar extends StatelessWidget {
                     child: Text(
                       currentPageNumber.toString(),
                       style: TextStyle(
-                        fontSize: 18.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
 
+              SizedBox(height: 12.h),
+
+              /// Font Size Slider
               Container(
                 height: 50.h,
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -86,6 +92,7 @@ class QuranTopOverlayBar extends StatelessWidget {
                   children: [
                     Icon(Icons.format_size, size: 20.w),
                     SizedBox(width: 8.w),
+
                     Expanded(
                       child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
@@ -96,11 +103,13 @@ class QuranTopOverlayBar extends StatelessWidget {
                           overlayShape: const RoundSliderOverlayShape(
                             overlayRadius: 14,
                           ),
-                          activeTrackColor: Theme.of(context).primaryColor,
-                          inactiveTrackColor: Theme.of(
-                            context,
-                          ).primaryColor.withOpacity(0.3),
-                          thumbColor: Theme.of(context).primaryColor,
+                          activeTrackColor:
+                              Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context)
+                              .primaryColor
+                              .withOpacity(0.3),
+                          thumbColor:
+                              Theme.of(context).primaryColor,
                         ),
                         child: Slider(
                           value: fontSize,
@@ -113,19 +122,20 @@ class QuranTopOverlayBar extends StatelessWidget {
                     ),
 
                     SizedBox(width: 8.w),
+
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 6.w,
                         vertical: 3.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .primaryColor
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
-                        '${fontSize.toInt()}',
+                        fontSize.toInt().toString(),
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.bold,

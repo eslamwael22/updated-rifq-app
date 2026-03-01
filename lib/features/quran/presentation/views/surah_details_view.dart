@@ -1,21 +1,23 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sakina_app/core/helper/shared_prefs.dart';
-import 'package:sakina_app/core/utils/custom_snack_bar.dart';
-import 'package:sakina_app/features/quran/presentation/views/widgets/DotsLoader.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sakina_app/features/quran/models/surah_model.dart';
 import 'package:sakina_app/features/quran/services/quran_pages_service.dart';
+import 'package:sakina_app/features/quran/presentation/views/widgets/DotsLoader.dart';
 import 'package:sakina_app/features/quran/presentation/views/widgets/page_indicator.dart';
 import 'package:sakina_app/features/quran/presentation/views/widgets/quran_page_content.dart';
 import 'package:sakina_app/features/quran/presentation/views/widgets/quran_top_overlay_bar.dart';
-import 'dart:async';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SurahDetailsView extends StatefulWidget {
   final Surah surah;
   final int? ayahNumber;
 
-  const SurahDetailsView({required this.surah, this.ayahNumber, super.key});
+  const SurahDetailsView({
+    required this.surah,
+    this.ayahNumber,
+    super.key,
+  });
 
   @override
   State<SurahDetailsView> createState() => SurahDetailsViewState();
@@ -26,13 +28,13 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
 
   late Future<List<QuranPage>> quranPages;
   final PageController pageController = PageController();
+
   int currentPage = 0;
   int initialPage = 0;
   String currentSurahName = '';
   double fontSize = 24.0;
   bool showOverlay = false;
   bool showSearch = false;
-  String searchQuery = '';
   Timer? _hideTimer;
 
   @override
@@ -58,44 +60,24 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
       cachedPages = await quranPages;
     }
 
-    // If ayah number is provided, navigate to that specific ayah
     if (widget.ayahNumber != null) {
-      final ayahPage = await QuranPagesService.getPageNumberForAyah(
+      initialPage = await QuranPagesService.getPageNumberForAyah(
         widget.surah.name,
         widget.ayahNumber!,
       );
-      initialPage = ayahPage;
     } else {
-      // Load saved page for this specific surah
       final prefs = await SharedPreferences.getInstance();
       final surahKey = 'last_page_${widget.surah.name}';
       final savedPage = prefs.getInt(surahKey);
 
-      // Get the first page of this surah
-      final firstPageOfSurah = await QuranPagesService.getPageNumberForSurah(
-        widget.surah.name,
-      );
+      final firstPageOfSurah =
+          await QuranPagesService.getPageNumberForSurah(widget.surah.name);
 
-      // Check if saved page is still within this surah
-      bool isStillInThisSurah = false;
-      if (savedPage != null) {
-        final savedPageData = (await quranPages)[savedPage];
-        for (var surah in savedPageData.surahs) {
-          if (surah.surahName == widget.surah.name) {
-            isStillInThisSurah = true;
-            break;
-          }
-        }
-      }
-
-      // Use saved page if it's still in this surah, otherwise use first page
-      initialPage = (isStillInThisSurah && savedPage != null)
-          ? savedPage
-          : firstPageOfSurah;
+      initialPage = savedPage ?? firstPageOfSurah;
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (pageController.hasClients && mounted) {
+      if (mounted && pageController.hasClients) {
         pageController.jumpToPage(initialPage);
         setState(() {
           currentPage = initialPage;
@@ -106,7 +88,6 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
     setState(() {});
   }
 
-  // Save current page for this specific surah
   Future<void> saveCurrentPage(int page) async {
     final prefs = await SharedPreferences.getInstance();
     final surahKey = 'last_page_${widget.surah.name}';
@@ -121,16 +102,15 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
   }
 
   void _toggleOverlay() {
+    _hideTimer?.cancel();
+
     setState(() {
       showOverlay = !showOverlay;
-      if (showOverlay) {
-        showSearch = false;
-      }
+      if (showOverlay) showSearch = false;
     });
 
     if (showOverlay) {
-      _hideTimer?.cancel();
-      _hideTimer = Timer(const Duration(seconds: 4), () {
+      _hideTimer = Timer(const Duration(seconds: 3), () {
         if (mounted) {
           setState(() {
             showOverlay = false;
@@ -141,21 +121,8 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
     }
   }
 
-  void _toggleSearch() {
-    setState(() {
-      showSearch = !showSearch;
-      if (showSearch) {
-        showOverlay = true;
-      }
-    });
-  }
-
   void _changeFontSize(double newSize) {
-    setState(() {
-      fontSize = newSize;
-    });
-
-    // Save font size to SharedPreferences
+    setState(() => fontSize = newSize);
     _saveFontSize(newSize);
   }
 
@@ -168,9 +135,7 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
     final prefs = await SharedPreferences.getInstance();
     final savedSize = prefs.getDouble('quran_font_size');
     if (savedSize != null) {
-      setState(() {
-        fontSize = savedSize;
-      });
+      setState(() => fontSize = savedSize);
     }
   }
 
@@ -178,86 +143,73 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: GestureDetector(
-        onTap: _toggleOverlay,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                SizedBox(height: 60.h),
+      body: Stack(
+        children: [
+          FutureBuilder<List<QuranPage>>(
+            future: quranPages,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: DotsLoader());
+              }
 
-                Expanded(
-                  child: FutureBuilder<List<QuranPage>>(
-                    future: quranPages,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: DotsLoader(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text('حدث خطأ في تحميل القرآن'),
-                        );
-                      } else if (snapshot.hasData) {
-                        final pages = snapshot.data!;
-                        return Stack(
-                          children: [
-                            PageView.builder(
-                              controller: pageController,
-                              onPageChanged: (index) {
-                                setState(() {
-                                  currentPage = index;
-                                  currentSurahName = getCurrentSurahName(
-                                    pages[index],
-                                  );
-                                });
-                                // Save current page to SharedPreferences
-                                saveCurrentPage(index);
-                              },
-                              itemCount: pages.length,
-                              itemBuilder: (context, pageIndex) {
-                                final pageData = pages[pageIndex];
-                                return QuranPageContent(
-                                  pageData: pageData,
-                                  pageIndex: pageIndex,
-                                  allPages: pages,
-                                  currentSurahName: currentSurahName,
-                                  fontSize: fontSize,
-                                  highlightedAyah: widget.ayahNumber,
-                                );
-                              },
-                            ),
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text('حدث خطأ في تحميل القرآن'),
+                );
+              }
 
-                            PageIndicator(
-                              currentPage: currentPage,
-                              totalPages: pages.length,
-                            ),
-                          ],
-                        );
-                      }
+              if (!snapshot.hasData) {
+                return const SizedBox();
+              }
 
-                      return const SizedBox();
+              final pages = snapshot.data!;
+
+              return Stack(
+                children: [
+                  PageView.builder(
+                    controller: pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentPage = index;
+                        currentSurahName =
+                            getCurrentSurahName(pages[index]);
+                      });
+                      saveCurrentPage(index);
+                    },
+                    itemCount: pages.length,
+                    itemBuilder: (context, pageIndex) {
+                      final pageData = pages[pageIndex];
+
+                      return QuranPageContent(
+                        pageData: pageData,
+                        pageIndex: pageIndex,
+                        allPages: pages,
+                        currentSurahName: currentSurahName,
+                        fontSize: fontSize,
+                        highlightedAyah: widget.ayahNumber,
+                        onTap: _toggleOverlay,
+                      );
                     },
                   ),
-                ),
-              ],
-            ),
+                  PageIndicator(
+                    currentPage: currentPage,
+                    totalPages: pages.length,
+                  ),
+                ],
+              );
+            },
+          ),
 
-            // Top Overlay Bar
-            QuranTopOverlayBar(
-              currentSurahName: currentSurahName,
-              fontSize: fontSize,
-              showOverlay: showOverlay && !showSearch,
-              onFontSizeChanged: _changeFontSize,
-              onBackTap: () => Navigator.pop(context),
-              onSearchTap: () =>
-                  Navigator.pop(context), // Go back to home instead of search
-              currentPageNumber: currentPage + 1, // Pages start from 1
-            ),
-
-            // Search Overlay
-          ],
-        ),
+          QuranTopOverlayBar(
+            currentSurahName: currentSurahName,
+            fontSize: fontSize,
+            showOverlay: showOverlay,
+            onFontSizeChanged: _changeFontSize,
+            onBackTap: () => Navigator.pop(context),
+            onSearchTap: () {},
+            currentPageNumber: currentPage + 1,
+          ),
+        ],
       ),
     );
   }

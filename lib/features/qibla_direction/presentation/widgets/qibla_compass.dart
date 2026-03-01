@@ -233,7 +233,7 @@ class _QiblaCompassWidgetState extends State<QiblaCompassWidget> {
                 Text(
                   isAligned
                       ? 'ثبّت الهاتف تمامًا، أنت الآن باتجاه القبلة'
-                      : 'حرّك الهاتف لتطابق السهم مع المؤشر العلوي',
+                      : 'حرّك الهاتف لتقلل فرق زاويه الهاتف عن القبله الي الصفر ...',
 
                   style: textTheme.bodyMedium?.copyWith(
                     color: isAligned ? alignedColor : Color(0xFF0D7E5E),

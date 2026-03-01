@@ -32,7 +32,7 @@ class _QiblaDirectionViewState extends State<QiblaDirectionView> {
         children: [
           CustomAppBar(
             isShow: false,
-            subTitle: 'استخدم بوصلة الهاتف لتحديد القبلة',
+            subTitle: 'حدد اتجاه القبله باستخدام بوصله هاتفك',
             title: 'اتجاه القبلة',
           ),
           Expanded(
