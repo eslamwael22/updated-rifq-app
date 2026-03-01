@@ -22,4 +22,12 @@ class SharedPref {
   static String getString(String key) {
     return _instance.getString(key) ?? '';
   }
+
+  static int getInt(String key) {
+    return _instance.getInt(key) ?? 0;
+  }
+
+  static void setInt(String key, int value) {
+    _instance.setInt(key, value);
+  }
 }

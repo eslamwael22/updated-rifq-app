@@ -25,7 +25,7 @@ class QuranNotification {
 
   static Future<void> scheduleDailyWerd() async {
     final now = DateTime.now();
-    final scheduledTime = DateTime(now.year, now.month, now.day, 17);
+    final scheduledTime = DateTime(now.year, now.month, now.day, 17, 5);
     await _notification.zonedSchedule(
       id: 600,
       title: '📖 وردك اليومي',

@@ -17,14 +17,17 @@ class CustomAudioSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slider(
-      value: value,
-      max: max,
-      onChangeEnd: onChangeEnd,
-      onChangeStart: onChangeStart,
-      onChanged: onChanged,
-      activeColor: Colors.teal,
-      inactiveColor: Colors.teal.withOpacity(0.3),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Slider(
+        value: value,
+        max: max,
+        onChangeEnd: onChangeEnd,
+        onChangeStart: onChangeStart,
+        onChanged: onChanged,
+        activeColor: Colors.teal,
+        inactiveColor: Colors.teal.withOpacity(0.3),
+      ),
     );
   }
 }

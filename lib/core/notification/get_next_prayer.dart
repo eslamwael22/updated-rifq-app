@@ -1,4 +1,3 @@
-import 'package:geocoding/geocoding.dart';
 import 'package:sakina_app/core/notification/prayer_model.dart';
 import 'package:intl/intl.dart';
 import 'package:sakina_app/features/prayer_times/data/prayer_time_service.dart';
@@ -29,35 +28,31 @@ PrayerNoteModel getNextPrayer(List<PrayerNoteModel> prayers) {
 Future<String> getNextPrayerText(List<PrayerNoteModel>? prayers) async {
   final service = PrayerTimeService();
   final prayerTimes = await service.getPrayerTimes();
-  
+
   if (prayerTimes == null) {
     return 'جاري تحميل مواقيت الصلاة...';
   }
-  
+
   final now = DateTime.now();
   final nextPrayer = prayerTimes.nextPrayer(date: now);
   final nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer);
-  
-  if (nextPrayerTime == null) {
-    return 'لا يمكن تحديد مواقيت الصلاة';
-  }
-  
+
   // Use the same logic as UI - convert to local time
   final localPrayerTime = nextPrayerTime.toLocal();
   final remaining = localPrayerTime.difference(now);
-  
+
   // Combine day and date in one line
   final dayName = DateFormat('EEEE', 'ar').format(now);
   final gregorianDate = DateFormat('d MMMM yyyy', 'ar').format(now);
   final fullDate = '$dayName, $gregorianDate';
-  
+
   // Use same format as UI - DateFormat.jm() without locale
   final format = DateFormat.jm();
   final prayerTime = format.format(localPrayerTime);
-  
+
   // Get prayer name in Arabic
   final prayerName = _getPrayerNameArabic(nextPrayer);
-  
+
   String remainingText;
   if (remaining.isNegative) {
     remainingText = 'الآن';
@@ -65,7 +60,7 @@ Future<String> getNextPrayerText(List<PrayerNoteModel>? prayers) async {
     final hours = remaining.inHours;
     final minutes = remaining.inMinutes % 60;
     final seconds = remaining.inSeconds % 60;
-    
+
     if (hours > 0) {
       remainingText = 'متبقي $hours ساعة و $minutes دقيقة';
     } else if (minutes > 0) {
@@ -74,7 +69,7 @@ Future<String> getNextPrayerText(List<PrayerNoteModel>? prayers) async {
       remainingText = 'متبقي $seconds ثانية';
     }
   }
-  
+
   // Get location from saved city name
   String location = 'جاري تحديد الموقع...';
   try {
@@ -82,7 +77,7 @@ Future<String> getNextPrayerText(List<PrayerNoteModel>? prayers) async {
   } catch (e) {
     location = 'غير محدد';
   }
-  
+
   return '$fullDate  -  $location\n$prayerName  $prayerTime   ....   $remainingText';
 }
 

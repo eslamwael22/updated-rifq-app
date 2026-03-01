@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
-import 'package:sakina_app/core/constants/keys.dart';
+import 'package:sakina_app/core/constants/app_keys.dart';
 import 'package:sakina_app/features/riquat_shareia/data/models/riquat_quran_model/riquat_quran_model.dart';
 
 part 'riquat_quran_state.dart';

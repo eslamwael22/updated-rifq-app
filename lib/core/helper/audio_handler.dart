@@ -65,7 +65,10 @@ class AudioHandlerHelper extends BaseAudioHandler
         title: item.title,
         artist: reciterCubit.selectedReciterModel?.name ?? 'غير معروف',
         album: 'القرآن الكريم',
-        artUri: Uri.parse('asset://assets/icons/Rifq logo.jpg'),
+        artUri: Uri(
+          scheme: 'asset',
+          path: 'assets/icons/rifq_logo.jpg',
+        ),
       );
     }).toList();
 
@@ -97,7 +100,10 @@ class AudioHandlerHelper extends BaseAudioHandler
           title: title,
           artist: reciterCubit.selectedReciterModel?.name ?? 'غير معروف',
           album: 'القرآن الكريم',
-          artUri: Uri.parse('asset://assets/icons/Rifq logo.jpg'),
+          artUri: Uri(
+            scheme: 'asset',
+            path: 'assets/icons/rifq_logo.jpg',
+          ),
           duration: _player.duration ?? Duration.zero,
         ),
       );

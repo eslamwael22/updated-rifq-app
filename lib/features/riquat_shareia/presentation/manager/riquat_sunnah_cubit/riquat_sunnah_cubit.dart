@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
-import 'package:sakina_app/core/constants/keys.dart';
+import 'package:sakina_app/core/constants/app_keys.dart';
 import 'package:sakina_app/features/riquat_shareia/data/models/riquat_model.dart';
 
 part 'riquat_sunnah_state.dart';

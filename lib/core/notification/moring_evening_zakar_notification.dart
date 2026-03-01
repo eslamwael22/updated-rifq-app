@@ -41,6 +41,7 @@ class MorningEveningAzkarNotification {
       now.month,
       now.day,
       hour,
+      3,
     );
 
     if (scheduledTime.isBefore(now)) {

@@ -6,7 +6,6 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:sakina_app/core/constants/app_colors/dark_app_colors.dart';
 import 'package:sakina_app/core/constants/app_images/app_images.dart';
-import 'package:sakina_app/core/notification/prayer_foreground_service_note.dart';
 import 'package:sakina_app/features/prayer_times/presentation/widgets/prayer_time_item.dart';
 import 'package:sakina_app/features/prayer_times/services/prayer_notification_service.dart';
 import 'package:sakina_app/features/prayer_times/data/prayer_time_service.dart';

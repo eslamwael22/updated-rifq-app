@@ -26,12 +26,10 @@ Future<void> main() async {
       (await getTemporaryDirectory()).path,
     ),
   );
-
   await NotificationBootstrap.initTimeZone();
   SharedPref.init();
   await InitNotificationService.initNotification();
   await NotificationBootstrap.init();
-
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return const AppErrorView();
   };
@@ -57,24 +55,6 @@ Future<void> main() async {
   });
 
   if (kReleaseMode) {
-    // runZonedGuarded(
-    //   () async {
-    //     await SentryFlutter.init(
-    //       (options) {
-    //         options.dsn = AppKeys.dsnkey;
-    //       },
-    //     );
-    //     runApp(
-    //       BlocProvider(
-    //         create: (context) => getIt.get<ThemeCubit>(),
-    //         child: const SakinaApp(),
-    //       ),
-    //     );
-    //   },
-    //   (exception, stackTrace) async {
-    //     await Sentry.captureException(exception, stackTrace: stackTrace);
-    //   },
-    // );
     runApp(
       MultiBlocProvider(
         providers: [

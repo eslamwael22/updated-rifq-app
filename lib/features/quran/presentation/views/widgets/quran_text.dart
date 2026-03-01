@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina_app/features/quran/services/quran_pages_service.dart';
 
@@ -38,6 +37,10 @@ class QuranText extends StatelessWidget {
       }
     }
     return fullText.trim();
+  }
+
+  String normalizeVerse(String text) {
+    return text.replaceAll('\u06DF', '\u0652');
   }
 
   @override
@@ -82,20 +85,26 @@ class QuranText extends StatelessWidget {
                     return TextSpan(
                       children: [
                         TextSpan(
-                          text: '${verse.text} ',
+                          text: '${normalizeVerse(verse.text)} ',
                           style: isHighlighted
                               ? TextStyle(
                                   fontSize: fontSize,
                                   fontFamily: 'uthmanic',
                                   height: 2,
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                  backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withOpacity(0.3),
                                 )
                               : TextStyle(
                                   fontSize: fontSize,
                                   fontFamily: 'uthmanic',
                                   height: 2,
-                                  color: Theme.of(context).colorScheme.onSurface,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                         ),
                         TextSpan(
@@ -107,7 +116,9 @@ class QuranText extends StatelessWidget {
                                 : Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
                             backgroundColor: isHighlighted
-                                ? Theme.of(context).colorScheme.primary.withOpacity(0.3)
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withOpacity(0.3)
                                 : null,
                           ),
                         ),

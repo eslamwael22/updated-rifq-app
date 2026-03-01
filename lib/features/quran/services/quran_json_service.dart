@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:sakina_app/core/constants/keys.dart';
+import 'package:sakina_app/core/constants/app_keys.dart';
 
 class QuranJsonService {
   static Future<List<dynamic>> loadQuranJson() async {

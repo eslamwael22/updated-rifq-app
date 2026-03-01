@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sakina_app/core/helper/shared_prefs.dart';
+import 'package:sakina_app/core/utils/custom_snack_bar.dart';
 import 'package:sakina_app/features/quran/presentation/views/widgets/DotsLoader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sakina_app/features/quran/models/surah_model.dart';
@@ -13,17 +15,15 @@ class SurahDetailsView extends StatefulWidget {
   final Surah surah;
   final int? ayahNumber;
 
-  const SurahDetailsView({
-    required this.surah, 
-    this.ayahNumber, 
-    super.key
-  });
+  const SurahDetailsView({required this.surah, this.ayahNumber, super.key});
 
   @override
   State<SurahDetailsView> createState() => SurahDetailsViewState();
 }
 
 class SurahDetailsViewState extends State<SurahDetailsView> {
+  static List<QuranPage>? cachedPages;
+
   late Future<List<QuranPage>> quranPages;
   final PageController pageController = PageController();
   int currentPage = 0;
@@ -51,7 +51,12 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
   }
 
   Future<void> loadPages() async {
-    quranPages = QuranPagesService.getAllPages();
+    if (cachedPages != null) {
+      quranPages = Future.value(cachedPages);
+    } else {
+      quranPages = QuranPagesService.getAllPages();
+      cachedPages = await quranPages;
+    }
 
     // If ayah number is provided, navigate to that specific ayah
     if (widget.ayahNumber != null) {
@@ -195,7 +200,6 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
                         );
                       } else if (snapshot.hasData) {
                         final pages = snapshot.data!;
-
                         return Stack(
                           children: [
                             PageView.builder(
@@ -213,7 +217,6 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
                               itemCount: pages.length,
                               itemBuilder: (context, pageIndex) {
                                 final pageData = pages[pageIndex];
-
                                 return QuranPageContent(
                                   pageData: pageData,
                                   pageIndex: pageIndex,

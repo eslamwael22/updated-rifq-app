@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#0175C2</color>
+    <!-- لون أيقونة التطبيق -->
+    <color name="ic_launcher_background">#0D7E5E</color>
+
+    <!-- لون شاشة البداية / Native Splash -->
+    <color name="flutter_native_splash">#0D7E5E</color>
 </resources>

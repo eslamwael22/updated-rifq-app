@@ -60,7 +60,7 @@ class QuranPagesService {
   }
 
   // Map to fix character differences between surah_data.dart and JSON
-  static Map<String, String> _surahNameMapping = {
+  static final Map<String, String> _surahNameMapping = {
     'سبأ': 'سبإ',
     // Add more mappings if needed
   };
@@ -68,7 +68,7 @@ class QuranPagesService {
   // دالة للحصول على رقم الصفحة اللي فيها سورة معينة
   static Future<int> getPageNumberForSurah(String surahName) async {
     final pages = await getAllPages();
-    
+
     // Try the original name first
     for (int i = 0; i < pages.length; i++) {
       for (var surah in pages[i].surahs) {
@@ -77,7 +77,7 @@ class QuranPagesService {
         }
       }
     }
-    
+
     // Try the mapped name
     final mappedName = _surahNameMapping[surahName];
     if (mappedName != null) {
@@ -94,9 +94,12 @@ class QuranPagesService {
   }
 
   // دالة للحصول على رقم الصفحة اللي فيها آية معينة من سورة معينة
-  static Future<int> getPageNumberForAyah(String surahName, int ayahNumber) async {
+  static Future<int> getPageNumberForAyah(
+    String surahName,
+    int ayahNumber,
+  ) async {
     final pages = await getAllPages();
-    
+
     // Try the original name first
     for (int i = 0; i < pages.length; i++) {
       for (var surah in pages[i].surahs) {
@@ -110,7 +113,7 @@ class QuranPagesService {
         }
       }
     }
-    
+
     // Try the mapped name
     final mappedName = _surahNameMapping[surahName];
     if (mappedName != null) {
