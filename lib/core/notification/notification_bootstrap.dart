@@ -1,4 +1,3 @@
-// notification_bootstrap.dart
 import 'dart:developer';
 import 'package:sakina_app/core/notification/adhan_notification.dart';
 import 'package:sakina_app/core/notification/azkar_notification_service.dart';

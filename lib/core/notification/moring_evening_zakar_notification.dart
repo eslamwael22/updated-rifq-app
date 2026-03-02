@@ -33,6 +33,7 @@ class MorningEveningAzkarNotification {
     required String body,
     required String payload,
   }) async {
+    final isExact = await InitNotificationService.isExactAllowed();
     final now = tz.TZDateTime.now(tz.local);
 
     var scheduledTime = tz.TZDateTime(
@@ -61,7 +62,9 @@ class MorningEveningAzkarNotification {
           priority: Priority.high,
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: isExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexact,
       matchDateTimeComponents: DateTimeComponents.time,
       payload: payload,
     );

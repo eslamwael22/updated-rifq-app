@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sakina_app/features/quran/models/surah_model.dart';
 import 'package:sakina_app/features/quran/services/quran_pages_service.dart';
@@ -70,8 +69,9 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
       final surahKey = 'last_page_${widget.surah.name}';
       final savedPage = prefs.getInt(surahKey);
 
-      final firstPageOfSurah =
-          await QuranPagesService.getPageNumberForSurah(widget.surah.name);
+      final firstPageOfSurah = await QuranPagesService.getPageNumberForSurah(
+        widget.surah.name,
+      );
 
       initialPage = savedPage ?? firstPageOfSurah;
     }
@@ -171,8 +171,7 @@ class SurahDetailsViewState extends State<SurahDetailsView> {
                     onPageChanged: (index) {
                       setState(() {
                         currentPage = index;
-                        currentSurahName =
-                            getCurrentSurahName(pages[index]);
+                        currentSurahName = getCurrentSurahName(pages[index]);
                       });
                       saveCurrentPage(index);
                     },

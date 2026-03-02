@@ -38,7 +38,6 @@ class InitNotificationService {
       onDidReceiveNotificationResponse: notificationTap,
       onDidReceiveBackgroundNotificationResponse: notificationBackgroundTap,
     );
-    await requestPermission();
   }
 
   static Future<void> requestPermission() async {
@@ -50,6 +49,20 @@ class InitNotificationService {
     if (androidPlugin != null) {
       await androidPlugin.requestNotificationsPermission();
       await androidPlugin.requestExactAlarmsPermission();
+    }
+  }
+
+  static Future<bool> isExactAllowed() async {
+    final androidPlugin = flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (androidPlugin == null) return false;
+
+    try {
+      return await androidPlugin.requestExactAlarmsPermission() ?? false;
+    } catch (_) {
+      return false;
     }
   }
 

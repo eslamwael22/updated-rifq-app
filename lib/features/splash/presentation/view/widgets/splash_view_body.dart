@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina_app/core/constants/app_routes.dart';
 import 'package:sakina_app/core/constants/app_keys.dart';
 import 'package:sakina_app/core/helper/shared_prefs.dart';
-import 'package:sakina_app/core/notification/prayer_foreground_service_note.dart';
 import 'package:sakina_app/features/splash/presentation/view/widgets/custom_circle_container.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -25,7 +24,6 @@ class _SplashViewBodyState extends State<SplashViewBody>
     super.initState();
     _initAnimation();
     _executeNavigation();
-    PrayerForegroundManager.startService();
   }
 
   void _executeNavigation() {

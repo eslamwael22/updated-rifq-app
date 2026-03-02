@@ -28,7 +28,7 @@ class RifqApp extends StatelessWidget {
               locale: Locale('ar'),
               debugShowCheckedModeBanner: false,
               onGenerateRoute: onGenerateRoute,
-              title: 'Sakina App',
+              title: 'Rifq App',
               theme: lightTheme(),
               darkTheme: darkTheme(),
               themeMode: themeState,

@@ -31,7 +31,9 @@ class CustomCircleDownloadIcon extends StatelessWidget {
             child: CircularProgressIndicator(
               value: task.progress,
               strokeWidth: 4,
-              color: isDark ? DarkAppColors.dividerSoft : null,
+              color: isDark
+                  ? DarkAppColors.primaryLight
+                  : DarkAppColors.dividerSoft,
             ),
           );
         }

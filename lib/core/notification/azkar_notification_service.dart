@@ -44,6 +44,7 @@ class AzkarNotificationService {
   }
 
   static Future<void> showRepeatedRandomZikr() async {
+    final isExact = await InitNotificationService.isExactAllowed();
     final random = Random();
     final zikr = _randomAzkar[random.nextInt(_randomAzkar.length)];
     await _notifications.periodicallyShow(
@@ -51,7 +52,9 @@ class AzkarNotificationService {
       title: 'دوم علي ذكر الله',
       body: zikr,
       repeatInterval: RepeatInterval.hourly,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: isExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexact,
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           _randomChannelId,
@@ -63,6 +66,7 @@ class AzkarNotificationService {
   }
 
   static Future<void> scheduleTasbih() async {
+    final isExact = await InitNotificationService.isExactAllowed();
     await _notifications.periodicallyShowWithDuration(
       id: 402,
       title: 'الصلاة علي النبي',
@@ -74,7 +78,9 @@ class AzkarNotificationService {
           'Tasbeeh',
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: isExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexact,
       payload: AzkarKeys.tasbihAzkar,
     );
   }

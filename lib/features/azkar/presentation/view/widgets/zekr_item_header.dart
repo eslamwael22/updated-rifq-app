@@ -37,7 +37,7 @@ class ZekrItemHeader extends StatelessWidget {
             zekr,
             maxLines: 2,
             textAlign: TextAlign.right,
-            overflow: TextOverflow.clip,
+
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16.sp,
               fontFamily: 'Cairo',

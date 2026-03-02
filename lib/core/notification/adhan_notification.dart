@@ -16,6 +16,7 @@ class AdhanNotification {
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >();
+
     await androidPlugin?.createNotificationChannel(
       AndroidNotificationChannel(
         'fajr_channel',
@@ -65,9 +66,9 @@ class AdhanNotification {
     required PrayerType prayer,
     required int id,
   }) async {
+    final isExact = await InitNotificationService.isExactAllowed();
     final chanelId = '${prayer.name.toLowerCase()}_channel';
 
-    // #region agent log
     try {
       final scheduledDate = tz.TZDateTime.from(dateTime, tz.local);
       final logLine = jsonEncode({
@@ -96,7 +97,9 @@ class AdhanNotification {
       title: 'حان الآن موعد الأذان',
       body: prayersMap[prayer.name],
       scheduledDate: tz.TZDateTime.from(dateTime, tz.local),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: isExact
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexact,
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           chanelId,

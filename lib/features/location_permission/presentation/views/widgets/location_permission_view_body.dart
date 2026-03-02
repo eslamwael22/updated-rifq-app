@@ -58,7 +58,7 @@ class LocationPermissionViewBody extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.homeView);
+                Navigator.pushReplacementNamed(context, AppRoutes.homeView);
                 SharedPref.setBool(AppKeys.locationSkip, true);
               },
               child: FittedBox(

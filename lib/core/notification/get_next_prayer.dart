@@ -78,7 +78,7 @@ Future<String> getNextPrayerText(List<PrayerNoteModel>? prayers) async {
     location = 'غير محدد';
   }
 
-  return '$fullDate  -  $location\n$prayerName  $prayerTime   ....   $remainingText';
+  return '$fullDate  -  $location\n$prayerName  $prayerTime';
 }
 
 String _getPrayerNameArabic(Prayer prayer) {

@@ -23,7 +23,7 @@ class CustomLocationButton extends StatelessWidget {
     return BlocConsumer<LocationCubit, LocationState>(
       listener: (context, state) {
         if (state is LocationStateSuccess) {
-          Navigator.pushNamed(context, AppRoutes.homeView);
+          Navigator.pushReplacementNamed(context, AppRoutes.homeView);
           showCustomSnackBar(context, 'تم تحديد الموقع بنجاح');
           SharedPref.setBool(AppKeys.locationNav, true);
         } else if (state is LocationStateFailure) {

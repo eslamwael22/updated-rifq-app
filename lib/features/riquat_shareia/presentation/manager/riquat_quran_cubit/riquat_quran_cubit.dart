@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -26,7 +25,6 @@ class RiquatQuranCubit extends Cubit<RiquatQuranState> {
       for (var item in jsonDecode(json)) {
         riquatList.add(RiquatQuranModel.fromJson(item));
       }
-      log(riquatList.toString());
       cachedList = riquatList;
       emit(RiquatQuranSuccess(riquatList: riquatList));
     } catch (e) {
